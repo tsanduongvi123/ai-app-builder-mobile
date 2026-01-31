@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, users } from "../drizzle/schema";
 import { ENV } from "./_core/env";
@@ -89,4 +89,153 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+/**
+ * Project Database Operations
+ */
+
+export async function getUserProjects(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const { projects } = await import("../drizzle/schema");
+  return db.select().from(projects).where(eq(projects.userId, userId));
+}
+
+export async function getProjectById(projectId: number, userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { projects } = await import("../drizzle/schema");
+  const result = await db
+    .select()
+    .from(projects)
+    .where(and(eq(projects.id, projectId), eq(projects.userId, userId)));
+
+  return result[0] || null;
+}
+
+export async function createProject(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { projects } = await import("../drizzle/schema");
+  const result = await db.insert(projects).values(data);
+  return (result as any).insertId || 0;
+}
+
+export async function updateProject(
+  projectId: number,
+  userId: number,
+  data: any
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { projects } = await import("../drizzle/schema");
+  await db
+    .update(projects)
+    .set(data)
+    .where(and(eq(projects.id, projectId), eq(projects.userId, userId)));
+}
+
+export async function deleteProject(projectId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { projects, projectFiles } = await import("../drizzle/schema");
+  // Delete all files first
+  await db
+    .delete(projectFiles)
+    .where(eq(projectFiles.projectId, projectId));
+
+  // Delete project
+  await db
+    .delete(projects)
+    .where(and(eq(projects.id, projectId), eq(projects.userId, userId)));
+}
+
+/**
+ * Project Files Database Operations
+ */
+
+export async function getProjectFiles(projectId: number) {
+  const db = await getDb();
+  if (!db) return [];
+
+  const { projectFiles } = await import("../drizzle/schema");
+  return db
+    .select()
+    .from(projectFiles)
+    .where(eq(projectFiles.projectId, projectId));
+}
+
+export async function getProjectFileByPath(
+  projectId: number,
+  filePath: string
+) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const { projectFiles } = await import("../drizzle/schema");
+  const result = await db
+    .select()
+    .from(projectFiles)
+    .where(
+      and(
+        eq(projectFiles.projectId, projectId),
+        eq(projectFiles.filePath, filePath)
+      )
+    );
+
+  return result[0] || null;
+}
+
+export async function createProjectFile(data: any) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { projectFiles } = await import("../drizzle/schema");
+  const result = await db.insert(projectFiles).values(data);
+  return (result as any).insertId || 0;
+}
+
+export async function createProjectFiles(files: any[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { projectFiles } = await import("../drizzle/schema");
+  const result = await db.insert(projectFiles).values(files);
+  return result;
+}
+
+export async function updateProjectFile(
+  fileId: number,
+  data: any
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { projectFiles } = await import("../drizzle/schema");
+  await db
+    .update(projectFiles)
+    .set(data)
+    .where(eq(projectFiles.id, fileId));
+}
+
+export async function deleteProjectFile(fileId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { projectFiles } = await import("../drizzle/schema");
+  await db.delete(projectFiles).where(eq(projectFiles.id, fileId));
+}
+
+export async function deleteProjectFiles(projectId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { projectFiles } = await import("../drizzle/schema");
+  await db
+    .delete(projectFiles)
+    .where(eq(projectFiles.projectId, projectId));
+}

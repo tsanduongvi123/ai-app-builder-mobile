@@ -8,19 +8,19 @@
 - [x] Create file storage system for generated code
 
 ## Phase 2: Home & Navigation
-- [ ] Create Home screen with quick actions
-- [ ] Implement tab navigation (Home, Projects, Settings)
-- [ ] Create My Projects screen with list view
+- [x] Create Home screen with quick actions
+- [x] Implement tab navigation (Home, Projects, Settings)
+- [x] Create My Projects screen with list view
 - [ ] Add project search and filtering
 - [ ] Implement recent projects display
 
 ## Phase 3: AI Generation Flow
-- [ ] Create Create App screen with form inputs
-- [ ] Implement AI prompt generation from user input
-- [ ] Create AI Generation screen with streaming display
-- [ ] Implement real-time streaming from Groq API
-- [ ] Add error handling and retry logic
-- [ ] Save generated projects to database
+- [x] Create Create App screen with form inputs
+- [x] Implement AI prompt generation from user input
+- [x] Create AI Generation screen with streaming display
+- [x] Implement real-time streaming from Gemini API
+- [x] Add error handling and retry logic
+- [x] Save generated projects to database
 
 ## Phase 4: Code Management
 - [ ] Create Code Editor screen

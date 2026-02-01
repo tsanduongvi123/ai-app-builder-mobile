@@ -89,3 +89,14 @@
 - [ ] Configure analytics
 - [ ] Create deployment checklist
 - [ ] Final testing and QA
+
+
+## BUG FIXES (Priority)
+- [x] Fix giao diện Home screen - styling lỗi, text overflow
+- [x] Fix tính năng Create App - không tạo được, thoát ra sau khi bảo "đang tạo"
+- [x] Fix tRPC endpoints - kiểm tra connection, error handling
+- [x] Fix Gemini API integration - validate response, error handling
+- [x] Add Code Viewer screen với syntax highlighting
+- [x] Add App Preview screen để xem trước ứng dụng
+- [ ] Fix Projects screen - hiển thị danh sách projects
+- [x] Add error messages và loading states

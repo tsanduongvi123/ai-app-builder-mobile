@@ -56,6 +56,20 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="code-viewer"
+        options={{
+          title: "Code Viewer",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="app-preview"
+        options={{
+          title: "App Preview",
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }
